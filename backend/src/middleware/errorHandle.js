@@ -1,72 +1,44 @@
 import ApiError from "../utils/ApiError.js";
 import {ENV} from "../config/ENV.js";
 const errorHandler = (err, req, res, next) => {
-    // Default error values
     let statusCode = err.statusCode || 500;
     let message = err.message || "Internal server error";
     let details = err.details;
 
-    // Handle ApiError instances (operational errors)
-    if (err.isOperational) {
-        return res.status(statusCode).json({
-            success: false,
-            statusCode,
-            message,
-            ...(details && { details }),
-        });
-    }
-
-    // Handle JWT errors
-    if (err.name === "JsonWebTokenError") {
-        statusCode = 401;
-        message = "Invalid or malformed token";
-    }
-
-    // Handle JWT expiration
-    if (err.name === "TokenExpiredError") {
-        statusCode = 401;
-        message = "Token has expired";
-    }
-
-    // Handle Mongoose validation errors
-    if (err.name === "ValidationError") {
+    if (err.name === "ValidationError" && err.errors) {
+        // Handle Mongoose validation errors
         statusCode = 422;
         message = "Validation failed";
         details = Object.values(err.errors).map((error) => error.message);
     }
-
-    // Handle Mongoose duplicate key error
-    if (err.code === 11000) {
+    else if (err.code === 11000) {
+        // Handle Mongoose duplicate key error
         const field = Object.keys(err.keyValue)[0];
         statusCode = 409;
         message = `${field} already exists`;
         details = { field, value: err.keyValue[field] };
-    }
-
-    // Handle Mongoose cast errors (invalid ObjectId)
-    if (err.name === "CastError") {
+    } else if (err.name === "CastError") {
+        // Handle Mongoose cast errors (invalid ObjectId)
         statusCode = 400;
-        message = "Invalid ID format";
+        message = `Invalid ${err.path}: ${err.value}`;
+    } else if (err.name === "ZodError") {
+        statusCode = 400;
+        message = "Validation failed";
+        details = err.issues;
     }
 
     // Log unexpected errors
-    if (!err.isOperational) {
-        console.error("❌ Unexpected Error:", {
-            name: err.name,
-            message: err.message,
-            stack: err.stack,
-            path: req.path,
-            method: req.method,
-        });
+    if (statusCode >= 500) {
+        console.error(`[${req.method} ${req.originalUrl}]`, err);
     }
 
-    // Send error response
-    return res.status(statusCode).json({
+        // Send error response
+    res.status(statusCode).json({
         success: false,
         statusCode,
         message,
         ...(details && { details }),
-        ...(env.nodeEnv === "development" && { stack: err.stack }),
+        ...(ENV.isProd ? {} : { stack: err.stack }),
     });
 };
 
