@@ -1,13 +1,12 @@
 import express from "express";
 import cors from 'cors';
-import connectDB from "./config/dpconfig.js";
-
 import cookieParser from "cookie-parser";
-import healthRouter from "./routes/health.js";
-import { errorHandler, notFound } from "./middleware/errorHandle.js";
 import morgan from "morgan";
+import healthRouter from "./routes/health.js";
+import connectDB from "./config/dpconfig.js";
+import { errorHandler, notFound } from "./middleware/errorHandle.js";
 import { ENV } from "./config/ENV.js";
-
+import AuthRouter from "./routes/auth.router.js";
 
 const app= express();
 app.use(cors({
@@ -15,8 +14,8 @@ app.use(cors({
     credentials: true,
 }));
 
-app.use(express.json({limit: "1mb"}));
-app.use(express.urlencoded({extended: true, limit: "1mb"}));
+app.use(express.json({limit: "2mb"}));
+app.use(express.urlencoded({extended: true, limit: "2mb"}));
 app.use(cookieParser());
 
 if(ENV.nodeEnv === "development"){
@@ -24,7 +23,7 @@ if(ENV.nodeEnv === "development"){
 }
 
 app.use("/api/health", healthRouter);
-
+app.use("/api/auth", AuthRouter);
 app.use(notFound);
 app.use(errorHandler);
 const startServer = async () => {

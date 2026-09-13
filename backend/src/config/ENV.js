@@ -10,7 +10,7 @@ if(missing.length){
     process.exit(1);
 }
 
-export const ENV={
+const ENV={
     nodeEnv: process.env.NODE_ENV || "development",
     port: Number(process.env.PORT) || 5000,
     mongoUrl: process.env.MONGO_URL,
@@ -21,5 +21,6 @@ export const ENV={
     ).split(",").map((e)=>e.trim()).filter(Boolean),
     geminiApi: process.env.GEMINI_API_KEY,
     geminiModel: process.env.GEMINI_MODEL || "gemini-2.5-flash",
-    isProd: process.env.NODE_ENV || "production"
+    isProd: (process.env.NODE_ENV || "development") === "production"
 }
+export {ENV};

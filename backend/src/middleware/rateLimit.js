@@ -1,4 +1,4 @@
-const {rateLimit, ipKeyGenerator} = require("express-rate-limit");
+import {rateLimit, ipKeyGenerator} from "express-rate-limit";
 
 const analyzeLimiter = rateLimit({
     windowMs: 60 * 1000, 

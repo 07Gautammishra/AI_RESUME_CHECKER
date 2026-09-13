@@ -1,7 +1,7 @@
 import jwt from "jsonwebtoken";
 import { ENV } from "../config/ENV.js";
 
-const generateToken = (id) => {
+const signToken = (id) => {
     return jwt.sign({ id }, ENV.jwtSecret, {
         expiresIn: '15d',
     });
@@ -16,4 +16,4 @@ const cookieOptions = {
     maxAge: 7 * 24 * 60 * 60 * 1000, 
 };
 
-export { generateToken, cookieOptions };
+export { signToken, cookieOptions , verifyToken};
