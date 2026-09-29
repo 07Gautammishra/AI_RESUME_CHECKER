@@ -2,8 +2,8 @@ import mongoose from "mongoose";
 
 const linkSchema = new mongoose.Schema(
     {
-        label: string,
-        url: string,
+        label: String,
+        url: String,
     },
     { _id: false }
 );
@@ -16,8 +16,10 @@ const basicsSchema = new mongoose.Schema(
         email: String,
         phone: String,
         links: [linkSchema],
-    },{_id: false }
-)
+    },
+    { _id: false }
+);
+
 const experienceItemSchema = new mongoose.Schema(
     {
         company: String,
@@ -25,8 +27,9 @@ const experienceItemSchema = new mongoose.Schema(
         location: String,
         period: String,
         bullets: [String],
-    },{_id: false }
-)
+    },
+    { _id: false }
+);
 
 const educationItemSchema = new mongoose.Schema(
     {
@@ -34,8 +37,9 @@ const educationItemSchema = new mongoose.Schema(
         school: String,
         location: String,
         period: String,
-        details: string,
-    },{_id: false }
+        details: String,
+    },
+    { _id: false }
 );
 
 const projectItemSchema = new mongoose.Schema(
@@ -44,35 +48,39 @@ const projectItemSchema = new mongoose.Schema(
         description: String,
         tech: [String],
         links: String,
-    },{_id: false }
+    },
+    { _id: false }
 );
+
 const certificationItemSchema = new mongoose.Schema(
     {
         name: String,
         issuer: String,
         year: String,
-    },{_id: false }
+    },
+    { _id: false }
 );
 
 const parsedSectionSchema = new mongoose.Schema(
     {
-        basics: {type: basicsSchema, default: ()=>({})},
-        summary: {type: String, default: ''},
-        experience: {type:[experienceItemSchema], default:[]},
-        education: {type:[educationItemSchema], default: []},
-        skills: {type:[String], default: []},
-        projects: {type:[projectItemSchema], default: []},
-        certifications: {type:[certificationItemSchema], default: []},
-        languages: {type:[String], default: []},
-        interests: {type:[String], default: []},
-    },{_id: false }
-)
+        basics: { type: basicsSchema, default: () => ({}) },
+        summary: { type: String, default: "" },
+        experience: { type: [experienceItemSchema], default: [] },
+        education: { type: [educationItemSchema], default: [] },
+        skills: { type: [String], default: [] },
+        projects: { type: [projectItemSchema], default: [] },
+        certifications: { type: [certificationItemSchema], default: [] },
+        languages: { type: [String], default: [] },
+        interests: { type: [String], default: [] },
+    },
+    { _id: false }
+);
 
 const resumeVersionSchema = new mongoose.Schema(
     {
         resumeId: {
             type: mongoose.Schema.Types.ObjectId,
-            ref: 'Resume',
+            ref: "Resume",
             required: true,
             index: true,
         },
@@ -87,7 +95,7 @@ const resumeVersionSchema = new mongoose.Schema(
             required: true,
         },
         parsedSections: {
-            type: parsedSectionSchema, 
+            type: parsedSectionSchema,
             default: () => ({}),
         },
         sourceType: {
@@ -97,13 +105,17 @@ const resumeVersionSchema = new mongoose.Schema(
         },
         parentVersionId: {
             type: mongoose.Schema.Types.ObjectId,
-            ref: 'ResumeVersion',
+            ref: "ResumeVersion",
             default: null,
         },
         latestAnalysisId: {
             type: mongoose.Schema.Types.ObjectId,
-            ref: 'Analysis',
+            ref: "Analysis",
             default: null,
+        },
+        label: {
+            type: String,
+            default: "V1",
         },
     },
     {
@@ -113,4 +125,4 @@ const resumeVersionSchema = new mongoose.Schema(
 
 resumeVersionSchema.index({ resumeId: 1, versionNumber: 1 }, { unique: true });
 
-export default mongoose.model('ResumeVersion', resumeVersionSchema);
+export default mongoose.model("ResumeVersion", resumeVersionSchema);

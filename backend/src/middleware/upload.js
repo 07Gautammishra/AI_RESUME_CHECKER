@@ -8,7 +8,7 @@ const upload = multer({
     limits: { fileSize: maxSize , files: 1},
     fileFilter: (req, file, cb) => {
         if (file.mimetype !== 'application/pdf') {
-            return cb(new ApiError.badRequest('Only PDF files are allowed'));
+            return cb(ApiError.badRequest('Only PDF files are allowed'));
         }
         cb(null, true);
     },
@@ -18,9 +18,9 @@ const uploadPdf=(field='file')=>(req, res, next)=>{
     upload.single(field)(req, res, (err) => {
         if (err instanceof multer.MulterError) {
             if (err.code === 'LIMIT_FILE_SIZE') {
-                return next(new ApiError.badRequest('File size exceeds the 5MB limit'));
+                return next(ApiError.badRequest('File size exceeds the 5MB limit'));
             }
-            return next(new ApiError.badRequest(err.message));
+            return next(ApiError.badRequest(err.message));
         } 
         if (err) {
             return next(err);

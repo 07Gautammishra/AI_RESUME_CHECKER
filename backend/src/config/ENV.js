@@ -1,6 +1,4 @@
 import dotenv from "dotenv";
-import path from "path";
-
 dotenv.config();
 
 const req= ["MONGO_URL", "JWT_SECRET"];
@@ -20,7 +18,7 @@ const ENV={
         process.env.CLIENT_ORIGIN || "http://localhost:5173,http://localhost:5174"
     ).split(",").map((e)=>e.trim()).filter(Boolean),
     geminiApi: process.env.GEMINI_API_KEY,
-    geminiModel: process.env.GEMINI_MODEL || "gemini-2.5-flash",
+    geminiModel: process.env.GEMINI_MODEL || "gemini-3-flash-preview",
     isProd: (process.env.NODE_ENV || "development") === "production"
 }
 export {ENV};

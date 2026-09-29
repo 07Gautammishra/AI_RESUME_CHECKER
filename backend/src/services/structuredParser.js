@@ -222,33 +222,43 @@ const emptyResumeData = {
     interests: [],
 };
 
+const PARSER_MODELS = [
+    ENV.geminiModel ,
+    "gemini-3.5-flash-lite",
+    "gemini-3.6-flash",
+];
+
 async function parseResume(rawText) {
     if (!ai || !rawText || !String(rawText).trim()) {
         return emptyResumeData;
     }
 
-    try {
-        const prompt = buildPrompt(rawText);
-        const response = await ai.models.generateContent({
-            model: ENV.geminiModel,
-            contents: [{role: "User", parts: [{text: prompt}]}],
-            config: {
-                responseMimeType: "application/json",
-                responseSchema,
-            },
-        });
+    const prompt = buildPrompt(rawText);
 
-        const text =typeof response.text ==="function" ? response.text(): response.text;
-        if(!text) throw Error("Empty Response");
-        const parsed = JSON.parse(text);
+    // Loop through the 3 models sequentially if one fails
+    for (const modelName of PARSER_MODELS) {
+        try {
+            const response = await ai.models.generateContent({
+                model: modelName,
+                contents: [{ role: "user", parts: [{ text: prompt }] }],
+                config: {
+                    responseMimeType: "application/json",
+                    responseSchema,
+                },
+            });
 
-        return validator.parse(parsed);
-    } catch (error) {
-        console.error("Resume parsing failed:", error);
-        return emptyResumeData;
+            const text = typeof response?.text === "function" ? response.text() : response?.text;
+            if (!text) continue;
+
+            const parsed = JSON.parse(text);
+            return validator.parse(parsed);
+        } catch (error) {
+            console.warn(`[Parser Warning]: Model ${modelName} failed, trying next fallback...`, error.message);
+        }
     }
+
+    console.error("[Parser Error]: All 3 models failed to parse the resume.");
+    return emptyResumeData;
 }
 
 export {parseResume};
-
-

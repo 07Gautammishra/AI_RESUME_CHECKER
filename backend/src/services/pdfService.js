@@ -1,5 +1,5 @@
-import uploadPdf from "../middleware/upload";
-import ApiError from "../utils/ApiError";
+import uploadPdf from "../middleware/upload.js";
+import ApiError from "../utils/ApiError.js";
 import {PDFParse} from "pdf-parse";
 
 async function extractTextFromPdf(fileBuffer) {
