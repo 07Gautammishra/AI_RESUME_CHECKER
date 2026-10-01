@@ -8,6 +8,7 @@ import { errorHandler, notFound } from "./middleware/errorHandle.js";
 import { ENV } from "./config/ENV.js";
 import AuthRouter from "./routes/auth.router.js";
 import resumeRouter from "./routes/resumes.js"
+import dashboardRouter from "./routes/dashboard.js"
 const app= express();
 app.use(cors({
     origin: true,
@@ -25,6 +26,7 @@ if(ENV.nodeEnv === "development"){
 app.use("/api/health", healthRouter);
 app.use("/api/auth", AuthRouter);
 app.use("/api/resumes", resumeRouter);
+app.use("/api/dashboard", dashboardRouter);
 
 app.use(notFound);
 app.use(errorHandler);
