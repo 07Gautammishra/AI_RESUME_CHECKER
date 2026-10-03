@@ -9,6 +9,9 @@ import { ENV } from "./config/ENV.js";
 import AuthRouter from "./routes/auth.router.js";
 import resumeRouter from "./routes/resumes.js"
 import dashboardRouter from "./routes/dashboard.js"
+import insightsRouter from "./routes/insights.js"
+import versionRouter from "./routes/version.js"
+import historyRouter from "./routes/history.js"
 const app= express();
 app.use(cors({
     origin: true,
@@ -27,6 +30,10 @@ app.use("/api/health", healthRouter);
 app.use("/api/auth", AuthRouter);
 app.use("/api/resumes", resumeRouter);
 app.use("/api/dashboard", dashboardRouter);
+app.use("/api/insights", insightsRouter);
+app.use("/api/versions", versionRouter);
+app.use("/api/history", historyRouter);
+
 
 app.use(notFound);
 app.use(errorHandler);
