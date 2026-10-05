@@ -12,7 +12,7 @@ const verifyToken = (token) => {
 const cookieOptions = {
     httpOnly: true,
     secure: ENV.isProd, // Set to true in production
-    sameSite: ENV.isProd ? 'None' : 'Lax', // Adjust based on your needs
+    sameSite: ENV.isProd ? 'none' : 'Lax', // Adjust based on your needs
     maxAge: 7 * 24 * 60 * 60 * 1000, 
 };
 
