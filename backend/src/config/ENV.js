@@ -14,9 +14,7 @@ const ENV={
     mongoUrl: process.env.MONGO_URL,
     jwtSecret: process.env.JWT_SECRET,
     cookieName: process.env.COOKIE_NAME || "arr_token",
-    clientOrigins: (
-        process.env.CLIENT_ORIGIN || "http://localhost:5173,http://localhost:5174"
-    ).split(",").map((e)=>e.trim()).filter(Boolean),
+    clientOrigins:"https://resume-roaster-2vg6.onrender.com",
     geminiApi: process.env.GEMINI_API_KEY,
     geminiModel: process.env.GEMINI_MODEL || "gemini-3-flash-preview",
     isProd: (process.env.NODE_ENV || "development") === "production"
