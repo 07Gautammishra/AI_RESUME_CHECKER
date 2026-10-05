@@ -17,7 +17,7 @@ export default defineConfig(({ mode }) => {
       port: 5173,
       proxy: {
         "/api": {
-          target: env.SERVER_URL || "http://localhost:5000",
+          target: env.VITE_SERVER_URL || env.SERVER_URL || "http://localhost:5000",
           changeOrigin: true,
         },
       },
