@@ -8,6 +8,7 @@ import { BenefitsSection } from "@/components/landing/BenefitsSection";
 import { TestimonialsSection } from "@/components/landing/TestimonialsSection";
 import { CTASection } from "@/components/landing/CTASection";
 import { Footer } from "@/components/landing/Footer";
+import PricingCards from "@/components/landing/PricingCards";
 
 export default function Landing() {
   // Landing always reads on light background — but app-wide theme persists.
@@ -22,13 +23,14 @@ export default function Landing() {
   return (
     <div className="min-h-screen bg-[var(--bg)] text-[var(--ink)] overflow-x-hidden">
       <Navbar />
-      <main style={{ background: "white" }}>
+      <main style={{ background: "back" }}>
         <HeroSection />
         <FeaturesSection />
         <HowItWorks />
         <DashboardPreviewSection />
         <BenefitsSection />
         <TestimonialsSection />
+        <PricingCards/>
         <CTASection />
       </main>
       <Footer />

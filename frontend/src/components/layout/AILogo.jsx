@@ -44,26 +44,43 @@ const AILogo = () => {
           transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
         />
 
-        {/* Shimmering diamond */}
-        <motion.div
-          className="relative h-[18px] w-[18px] rounded-[4px]"
-          style={{
-            background:
-              "linear-gradient(135deg, #5B7C6A 0%, #2F4A3A 50%, #5B7C6A 100%)",
-            backgroundSize: "200% 200%",
-            rotate: 45,
-          }}
+        {/* Larger AI Star (Increased to 26px) */}
+        <motion.svg
+          width="26"
+          height="26"
+          viewBox="0 0 24 24"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+          className="relative z-10 drop-shadow-[0_0_4px_rgba(168,196,179,0.5)]"
           animate={{
-            backgroundPosition: ["0% 0%", "100% 100%", "0% 0%"],
             scale: [1, 1.12, 1],
-            rotate: [45, 60, 45],
+            rotate: [0, 8, -8, 0],
           }}
           transition={{ duration: 3.2, repeat: Infinity, ease: "easeInOut" }}
-        />
+        >
+          <path
+            d="M12 0C12 6.62742 6.62742 12 0 12C6.62742 12 12 17.3726 12 24C12 17.3726 17.3726 12 24 12C17.3726 12 12 6.62742 12 0Z"
+            fill="url(#star-gradient)"
+          />
+          <defs>
+            <linearGradient
+              id="star-gradient"
+              x1="0"
+              y1="0"
+              x2="24"
+              y2="24"
+              gradientUnits="userSpaceOnUse"
+            >
+              <stop stopColor="#A8C4B3" />
+              <stop offset="0.5" stopColor="#5B7C6A" />
+              <stop offset="1" stopColor="#2F4A3A" />
+            </linearGradient>
+          </defs>
+        </motion.svg>
 
         {/* Inner highlight sparkle */}
         <motion.div
-          className="absolute h-[3px] w-[3px] rounded-full bg-white"
+          className="absolute h-[3px] w-[3px] rounded-full bg-white pointer-events-none"
           style={{ boxShadow: "0 0 6px rgba(255,255,255,0.9)" }}
           animate={{
             opacity: [0, 1, 0],
@@ -73,9 +90,9 @@ const AILogo = () => {
           transition={{ duration: 2.4, repeat: Infinity, ease: "easeInOut" }}
         />
 
-        {/* Tiny second sparkle, offset timing */}
+        {/* Tiny second sparkle */}
         <motion.div
-          className="absolute h-[2px] w-[2px] rounded-full bg-white"
+          className="absolute h-[2px] w-[2px] rounded-full bg-white pointer-events-none"
           style={{ boxShadow: "0 0 4px rgba(255,255,255,0.8)" }}
           animate={{
             opacity: [0, 1, 0],

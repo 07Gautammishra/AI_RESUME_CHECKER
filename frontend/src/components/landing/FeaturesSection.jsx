@@ -114,7 +114,7 @@ export function FeaturesSection() {
             transition={{ duration: 0.5, delay: (i % 3) * 0.05 }}
             className={`group relative rounded-[22px] border border-[var(--border)] shadow-card hover:shadow-hover transition-all duration-300 overflow-hidden ${f.span || ""}`}
             style={{
-              background: "linear-gradient(180deg, #FFFFFF 0%, #FBFBF7 100%)",
+              background: `linear-gradient(180deg, var(--surface) 0%, var(--surface-2) 100%)`,
             }}
           >
             {/* Top-edge gradient highlight (inset light line) */}
@@ -319,11 +319,10 @@ function VersionsPreview() {
       {versions.map((v, i) => (
         <div
           key={v.label}
-          className={`flex-1 rounded-xl p-2.5 ${
-            i === versions.length - 1
+          className={`flex-1 rounded-xl p-2.5 ${i === versions.length - 1
               ? "bg-[var(--accent-soft)] border border-[var(--accent)]/30"
               : "bg-[var(--surface)] border border-[var(--border)]"
-          }`}
+            }`}
         >
           <div className="text-[9px] uppercase tracking-wide text-[var(--ink-muted)] font-semibold">
             {v.label}

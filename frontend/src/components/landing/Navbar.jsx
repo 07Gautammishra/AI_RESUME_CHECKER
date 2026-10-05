@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import { Menu, X, ArrowRight } from "lucide-react";
+import { Menu, X, ArrowRight, Sun, Moon } from "lucide-react";
 import AILogo from "@/components/layout/AILogo";
+import { useTheme } from "@/context/ThemeContext"; // adjust import path if needed
 import { cn } from "@/lib/utils";
 
 const NAV_LINKS = [
@@ -15,6 +16,7 @@ const NAV_LINKS = [
 export function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
+  const { theme, toggle } = useTheme();
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 8);
@@ -36,7 +38,7 @@ export function Navbar() {
           "rounded-xl md:rounded-full border transition-all duration-300",
           scrolled
             ? "bg-[var(--surface)]/85 border-[var(--border)] backdrop-blur-xl shadow-card"
-            : "bg-[var(--surface)]/95 border-transparent backdrop-blur-md",
+            : "bg-[var(--surface)]/95 border-transparent backdrop-blur-md"
         )}
       >
         <div className="flex items-center justify-between gap-4 px-3 sm:px-4 py-2">
@@ -60,6 +62,27 @@ export function Navbar() {
           </nav>
 
           <div className="flex items-center gap-2">
+            {/* Theme Toggle Button */}
+            <motion.button
+              whileTap={{ scale: 0.92 }}
+              onClick={toggle}
+              className="h-9 w-9 rounded-full flex items-center justify-center text-[var(--ink)] hover:bg-[var(--surface-2)] border border-[var(--border)] transition-colors"
+              aria-label={`Switch to ${theme === "light" ? "dark" : "light"} mode`}
+            >
+              <motion.div
+                key={theme}
+                initial={{ scale: 0.6, rotate: -90, opacity: 0 }}
+                animate={{ scale: 1, rotate: 0, opacity: 1 }}
+                transition={{ duration: 0.2, ease: "easeOut" }}
+              >
+                {theme === "light" ? (
+                  <Moon size={16} className="text-[var(--ink)]" />
+                ) : (
+                  <Sun size={16} className="text-[var(--ink)]" />
+                )}
+              </motion.div>
+            </motion.button>
+
             <Link
               to="/login"
               className="hidden sm:inline-flex h-9 px-4 rounded-full text-[13px] font-medium text-[var(--ink)] hover:bg-[var(--surface-2)] items-center transition-colors"
