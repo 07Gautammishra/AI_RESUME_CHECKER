@@ -18,8 +18,7 @@ export default function Login() {
   const [err, setErr] = useState("");
   const [loading, setLoading] = useState(false);
 
-  async function onSubmit(e) {
-    e.preventDefault();
+  const handleLogin = async () => {
     setErr("");
     setLoading(true);
     try {
@@ -27,10 +26,14 @@ export default function Login() {
       nav("/dashboard");
     } catch (e) {
       setErr(e.message || "Login failed");
-    } finally {
-      setLoading(false);
+      setLoading(false); // Only reset loading on failure; navigation handles unmount on success
     }
-  }
+  };
+
+  const onSubmit = (e) => {
+    e.preventDefault();
+    handleLogin();
+  };
 
   return (
     <AuthShell
@@ -65,7 +68,7 @@ export default function Login() {
             type="email"
             autoComplete="email"
             value={form.email}
-            onChange={(v) => setForm({ ...form, email: v })}
+            onChange={(v) => setForm((prev) => ({ ...prev, email: v }))}
             placeholder="you@example.com"
             icon={Mail}
           />
@@ -75,7 +78,7 @@ export default function Login() {
             type="password"
             autoComplete="current-password"
             value={form.password}
-            onChange={(v) => setForm({ ...form, password: v })}
+            onChange={(v) => setForm((prev) => ({ ...prev, password: v }))}
             placeholder="••••••••"
             icon={Lock}
             extra={
