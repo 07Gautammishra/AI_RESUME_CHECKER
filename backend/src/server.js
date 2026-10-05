@@ -15,26 +15,16 @@ import historyRouter from "./routes/history.js";
 
 const app = express();
 
-const allowedOrigins = [
-  "http://localhost:5173",
-  "http://localhost:3000",
-  ENV.clientOrigins, 
-];
-
+app.use(cookieParser());
 app.use(
   cors({
-    origin: (origin, callback) => {
-      // Allow requests with no origin (like Postman, curl, or server-to-server)
-      if (!origin) return callback(null, true);
-      if (allowedOrigins.includes(origin)) {
-        return callback(null, true);
-      }
-      return callback(null, true); // Fallback for testing; restrict to allowedOrigins in production
-    },
-    credentials: true,
+    origin: ENV.CLIENT_URL, // e.g. "https://your-frontend.onrender.com"
+    credentials: true,             // Required for cross-origin cookies
   })
 );
 
+// If running behind Render's reverse proxy (HTTPS)
+app.set("trust proxy", 1);
 app.use(express.json({ limit: "5mb" }));
 app.use(express.urlencoded({ extended: true, limit: "5mb" }));
 app.use(cookieParser());
