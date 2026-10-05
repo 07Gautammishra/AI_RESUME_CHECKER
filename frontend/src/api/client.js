@@ -1,9 +1,16 @@
+
 import axios from "axios";
 
-export const apiClient = axios.create({
-  baseURL: "/api",
-  withCredentials: true,
-  headers: { "Content-Type": "application/json" },
+// Fall back to relative path "/api" in local dev so Vite proxy works,
+// or use explicit VITE_API_URL in production.
+const baseURL = import.meta.env.VITE_API_URL || "/api";
+
+export const api = axios.create({
+  baseURL,
+  withCredentials: true, // Crucial for HTTP-only JWT cookies across domains
+  headers: {
+    "Content-Type": "application/json",
+  },
 });
 
 apiClient.interceptors.response.use(
