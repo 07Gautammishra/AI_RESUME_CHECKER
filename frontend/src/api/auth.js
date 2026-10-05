@@ -1,5 +1,10 @@
 import { apiClient } from "./client";
 
+const handleApiError = (err) => {
+  const message = err.response?.data?.message || err.message || "An unexpected error occurred";
+  throw new Error(message);
+};
+
 export const authApi={
   register: (payload)=> apiClient.post("/auth/register", payload).then((r)=>r.data),
   login: (payload)=> apiClient.post("/auth/login", payload).then((r)=>r.data),
