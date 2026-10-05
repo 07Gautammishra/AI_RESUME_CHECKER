@@ -5,7 +5,7 @@ import axios from "axios";
 // or use explicit VITE_API_URL in production.
 const baseURL = import.meta.env.VITE_API_URL || "/api";
 
-export const api = axios.create({
+export const apiClient = axios.create({
   baseURL,
   withCredentials: true, // Crucial for HTTP-only JWT cookies across domains
   headers: {
