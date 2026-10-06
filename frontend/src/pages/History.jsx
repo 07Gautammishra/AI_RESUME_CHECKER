@@ -94,7 +94,8 @@ export default function History() {
         description="Everything you've done across your resumes, in time order."
       />
 
-      <div className="inline-flex items-center gap-1 bg-[var(--surface)] border border-[var(--border)] p-1 rounded-full shadow-card">
+      {/* Responsive Filter Container */}
+      <div className="w-full sm:w-auto inline-grid grid-cols-2 xs:grid-cols-4 sm:flex items-center gap-1.5 sm:gap-1 bg-[var(--surface)] border border-[var(--border)] p-1.5 sm:p-1 rounded-2xl sm:rounded-full shadow-card overflow-x-auto">
         {FILTERS.map((f) => {
           const Icon = f.icon;
           const count = totals[f.key] ?? events.length;
@@ -104,17 +105,17 @@ export default function History() {
               key={f.key}
               onClick={() => setFilter(f.key)}
               className={cn(
-                "h-9 px-3.5 text-xs font-medium rounded-full transition-colors inline-flex items-center gap-1.5",
+                "h-9 px-3 sm:px-3.5 text-xs font-medium rounded-xl sm:rounded-full transition-colors flex items-center justify-center gap-1.5 shrink-0 whitespace-nowrap",
                 isActive
                   ? "bg-[var(--ink)] text-[var(--bg)]"
-                  : "text-[var(--ink-muted)] hover:text-[var(--ink)]"
+                  : "text-[var(--ink-muted)] hover:text-[var(--ink)] hover:bg-[var(--surface-2)] sm:hover:bg-transparent"
               )}
             >
-              <Icon size={13} />
-              {f.label}
+              <Icon size={13} className="shrink-0" />
+              <span>{f.label}</span>
               <span
                 className={cn(
-                  "tabular text-[10px] px-1.5 py-0.5 rounded-full",
+                  "tabular text-[10px] px-1.5 py-0.5 rounded-full shrink-0",
                   isActive
                     ? "bg-white/15 text-[var(--bg)]"
                     : "bg-[var(--surface-2)] text-[var(--ink-muted)]"
@@ -197,7 +198,7 @@ function HistorySkeleton() {
   return (
     <div className="space-y-6">
       <Skeleton className="h-10 w-1/3 rounded-2xl" />
-      <Skeleton className="h-11 w-[420px] rounded-full" />
+      <Skeleton className="h-11 w-full sm:w-[420px] rounded-2xl sm:rounded-full" />
       {Array.from({ length: 3 }).map((_, i) => (
         <div key={i} className="space-y-3">
           <Skeleton className="h-4 w-24 rounded-full" />
