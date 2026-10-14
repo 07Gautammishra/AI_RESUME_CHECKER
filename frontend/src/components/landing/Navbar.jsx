@@ -170,7 +170,7 @@ export function Navbar() {
                     className="flex items-center gap-2 px-3 py-2 rounded-xl text-sm font-medium text-[var(--ink)] hover:bg-[var(--surface-2)] transition-colors"
                   >
                     <div className="h-6 w-6 rounded-full bg-[var(--ink)] text-[var(--bg)] flex items-center justify-center text-xs font-bold">
-                      {user.name?.[0] || <User size={12} />}
+                      {user.name?.[0].toUpperCase() || <User size={16} />}
                     </div>
                     <span>{user.name}</span>
                   </Link>
