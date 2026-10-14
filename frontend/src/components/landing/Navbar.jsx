@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X, ArrowRight, Sun, Moon } from "lucide-react";
+import { Menu, X, ArrowRight, Sun, Moon, User } from "lucide-react";
 import AILogo from "@/components/layout/AILogo";
 import { useTheme } from "@/context/ThemeContext";
 import { cn } from "@/lib/utils";
+import { useAuth } from "@/context/AuthContext";
 
 const NAV_LINKS = [
   { label: "Features", href: "#features" },
@@ -17,6 +18,7 @@ export function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
   const { theme, toggle } = useTheme();
+  const { user, loading } = useAuth(); // Auth context integrated
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 8);
@@ -96,25 +98,37 @@ export function Navbar() {
               </motion.div>
             </motion.button>
 
-            {/* Sign In Link */}
-            <Link
-              to="/login"
-              className="hidden sm:inline-flex items-center justify-center h-9 px-4 rounded-full text-[13px] font-medium text-[var(--ink)] hover:bg-[var(--surface-2)] transition-colors"
-            >
-              Sign in
-            </Link>
+            {/* Auth Conditional UI */}
+            {!loading && user ? (
+              <Link
+                to="/dashboard"
+                className="inline-flex items-center gap-2 h-9 px-3.5 rounded-full bg-[var(--surface-2)] border border-[var(--border)] text-[var(--ink)] text-xs sm:text-[13px] font-medium hover:bg-[var(--border)]/40 transition-colors shrink-0"
+              >
+                {user.name?.[0].toUpperCase() || <User size={16} />}
+              </Link>
+            ) : (
+              <>
+                {/* Sign In Link */}
+                <Link
+                  to="/login"
+                  className="hidden sm:inline-flex items-center justify-center h-9 px-4 rounded-full text-[13px] font-medium text-[var(--ink)] hover:bg-[var(--surface-2)] transition-colors"
+                >
+                  Sign in
+                </Link>
 
-            {/* Get Started Button */}
-            <Link
-              to="/register"
-              className="group inline-flex items-center justify-center gap-1.5 h-9 px-3.5 sm:px-4 rounded-full bg-[var(--ink)] text-[var(--bg)] text-xs sm:text-[13px] font-semibold hover:opacity-90 active:scale-[0.98] transition-all shrink-0"
-            >
-              <span>Get started</span>
-              <ArrowRight
-                size={13}
-                className="group-hover:translate-x-0.5 transition-transform shrink-0"
-              />
-            </Link>
+                {/* Get Started Button */}
+                <Link
+                  to="/register"
+                  className="group inline-flex items-center justify-center gap-1.5 h-9 px-3.5 sm:px-4 rounded-full bg-[var(--ink)] text-[var(--bg)] text-xs sm:text-[13px] font-semibold hover:opacity-90 active:scale-[0.98] transition-all shrink-0"
+                >
+                  <span>Get started</span>
+                  <ArrowRight
+                    size={13}
+                    className="group-hover:translate-x-0.5 transition-transform shrink-0"
+                  />
+                </Link>
+              </>
+            )}
 
             {/* Mobile Drawer Trigger (Visible <= 925px) */}
             <button
@@ -148,14 +162,27 @@ export function Navbar() {
                 </a>
               ))}
 
-              <div className="pt-2 mt-2 border-t border-[var(--border)]/60 sm:hidden">
-                <Link
-                  to="/login"
-                  onClick={() => setOpen(false)}
-                  className="block px-3 py-2 rounded-xl text-sm font-medium text-[var(--ink)] hover:bg-[var(--surface-2)] transition-colors"
-                >
-                  Sign in
-                </Link>
+              <div className="pt-2 mt-2 border-t border-[var(--border)]/60">
+                {!loading && user ? (
+                  <Link
+                    to="/dashboard"
+                    onClick={() => setOpen(false)}
+                    className="flex items-center gap-2 px-3 py-2 rounded-xl text-sm font-medium text-[var(--ink)] hover:bg-[var(--surface-2)] transition-colors"
+                  >
+                    <div className="h-6 w-6 rounded-full bg-[var(--ink)] text-[var(--bg)] flex items-center justify-center text-xs font-bold">
+                      {user.name?.[0] || <User size={12} />}
+                    </div>
+                    <span>{user.name}</span>
+                  </Link>
+                ) : (
+                  <Link
+                    to="/login"
+                    onClick={() => setOpen(false)}
+                    className="block px-3 py-2 rounded-xl text-sm font-medium text-[var(--ink)] hover:bg-[var(--surface-2)] transition-colors sm:hidden"
+                  >
+                    Sign in
+                  </Link>
+                )}
               </div>
             </motion.div>
           )}
