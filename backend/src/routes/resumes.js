@@ -37,7 +37,7 @@ router.route("/:id")
   .delete(validate(idParamSchema, "params"), deleteResume);
 
 router.get(
-  "/:id/version/:versionId",
+  "/:id/versions/:versionId",
   validate(versionParamSchema, "params"),
   getResumeVersion
 );
