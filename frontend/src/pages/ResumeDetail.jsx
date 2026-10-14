@@ -121,21 +121,21 @@ export default function ResumeDetail() {
         title={resume?.title || "Resume"}
         description={
           resume
-            ? `Updated ${relativeTime(resume.updatedAt)} · ${versions.length} version${
-                versions.length > 1 ? "s" : ""
-              }`
+            ? `Updated ${relativeTime(resume.updatedAt)} · ${versions.length} version${versions.length > 1 ? "s" : ""
+            }`
             : ""
         }
         actions={
           <div className="flex items-center gap-2">
             <Button variant="ghost" onClick={() => nav("/resumes")}>
-              <ArrowLeft size={14} /> All resumes
+              <ArrowLeft size={14} /><span className="hidden min-[400px]:inline">Back</span>
             </Button>
             <Button
               variant="outline"
               onClick={() => nav(`/resumes/${id}/export`)}
             >
-              <Download size={14} /> Export PDF
+              <Download size={14} />
+              <span className="hidden min-[550px]:inline">Export PDF</span>
             </Button>
           </div>
         }
