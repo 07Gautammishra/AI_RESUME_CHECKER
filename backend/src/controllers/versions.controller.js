@@ -52,12 +52,12 @@ export const getVersionsData = asyncHandler(async (req, res) => {
   });
 
   // 5. Aggregate version counts
-  const total = {
+  const totals = {
     all: items.length,
     uploads: items.filter((i) => i.sourceType === "upload").length,
     rewrites: items.filter((i) => i.sourceType === "rewrite").length,
   };
 
   // 6. Return response
-  res.status(200).json({ versions: items, total });
+  res.status(200).json({ versions: items, totals });
 });
